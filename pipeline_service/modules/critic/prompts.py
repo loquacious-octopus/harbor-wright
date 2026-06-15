@@ -165,3 +165,14 @@ emit the JSON report following the scoring rubric and protocol above.
 Remember: include `matching_aspects` (what already works) alongside
 `issues` — the repair stage needs the preserve-list.
 """
+
+ACCEPTED_STATIC_CRITIC_SYSTEM_APPEND = '### lighting\nFor lighting, high severity means glow without fixture, missing base/stem/socket/wick, detached arms, candle flames floating, no shade/dome thickness, or light bar without casing/end caps.\n\n### tables-beds-storage\nFor tables/beds/storage, high severity means unsupported tabletops, missing legs/braces, no bed soft-part separation, wrong drawer/cubby count, filled open storage, absent handles/latches, or cushion tufting lost.\n\n### long-handled-implements\nFor long handled implements, high severity means tiny in frame, one-cylinder collapse, missing head/tip/cap, wrong working-end silhouette, or merged material zones.\n\n### instrument-dials\nFor instrument dials, high severity means missing pointer hands/radial arms, absent tick ring, filled cutouts, no center pivot, watch case without crown/lugs, or face details floating off the disc.\n\n### transparent-edge-readability\nFor transparent vessels, domes, bottles, cups, vases, jars, and cones, high severity means the clear body disappears, lacks rim/base/edge outlines, has no wall thickness, or loses cap/base/frame anchors.\n'
+ACCEPTED_STATIC_CRITIC_REPAIR_APPEND = '### lighting\nCritique lighting by physical support skeleton, attachment, shade/dome/casing, wick/flame/bulb relation, and emissive containment.\n\n### tables-beds-storage\nCritique furniture/storage by functional module count, supports, soft/hard separation, compartments, openings, and hardware.\n\n### long-handled-implements\nCritique simple long implements by axis scale, head/handle separation, tip shape, contact, and material separation.\n\n### instrument-dials\nCritique dials by face, bezel, pivot, hands/radial arms, tick ring, cutouts, and contacted watch/scientific hardware.\n\n### transparent-edge-readability\nCritique transparent objects by readable silhouette, rim/base/neck outlines, wall thickness, edge/facet contrast, and attached opaque anchors before judging glass color.\n'
+
+CRITIC_SYSTEM_PROMPT = CRITIC_SYSTEM_PROMPT + "\n\n" + ACCEPTED_STATIC_CRITIC_SYSTEM_APPEND
+CRITIC_USER_TEMPLATE = CRITIC_USER_TEMPLATE + "\n\n" + ACCEPTED_STATIC_CRITIC_REPAIR_APPEND
+if "CRITIC_EDITOR_SYSTEM_PROMPT" in globals():
+    CRITIC_EDITOR_SYSTEM_PROMPT = CRITIC_EDITOR_SYSTEM_PROMPT + "\n\n" + ACCEPTED_STATIC_CRITIC_SYSTEM_APPEND
+if "CRITIC_EDITOR_USER_TEMPLATE" in globals():
+    CRITIC_EDITOR_USER_TEMPLATE = CRITIC_EDITOR_USER_TEMPLATE + "\n\n" + ACCEPTED_STATIC_CRITIC_REPAIR_APPEND
+

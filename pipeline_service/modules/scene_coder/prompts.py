@@ -222,138 +222,6 @@ Vehicle modeling playbook:
   silhouette, count, orientation, and attachment correct; then add trim,
   colors, logos, spokes, tread, and small hardware.
 
-Jewelry / gem / ornament construction guard:
-- For rings, gems, pendants, charms, hanging ornaments, and small abstract
-  sculptures, choose one stable carrier before decoration: torus/tube loop,
-  shallow extruded pendant plate, low-poly faceted gem, capped ornament
-  shell/sphere/cone, or simple lathe/extrude sculpture silhouette.
-- Add attachment hardware only after the carrier is solid. Hooks, jump rings,
-  caps, bails, prongs, clasps, insets, and chain links must visibly touch or
-  overlap the parent part; do not leave small metal bits floating near it.
-- Gems should use readable low-poly facets and conservative glass/metal
-  materials before sparkle marks or tiny highlights.
-
-Botanical repeated-part guard:
-- For flowers, plants, trees, succulents, cacti, and leafy clusters, build the
-  visible anchor first: stem, trunk, center disk, pot/soil, cactus rib, branch,
-  or rosette core.
-- Attach every petal, leaf, blade, spine, frond, and rosette segment to that
-  anchor with deterministic radial or layered indexing. Do not scatter
-  repeated botanical parts as detached blobs.
-- Repair detached plant parts by moving, rotating, or deleting them before
-  adding more petals, leaves, color patches, or surface texture.
-
-Tools and bladed-object scaffold:
-- Classify the tool subtype before modeling; do not force every thin object
-  into a knife or generic rod.
-- Build the working-end scaffold before decoration: blade plus tang/guard/
-  bolster for knives or swords; open or box jaw for wrenches; striking face
-  plus claw/peen for hammers; bit, eye/socket, poll, and penetrated handle for
-  axes; toothed edge for saws.
-- Preserve distinct material zones for metal working ends, rubber/wood grips,
-  painted handles, and fasteners.
-
-Bags, cases, and carry-container guard:
-- Choose the container subtype before details. Hard cases/trunks need a box
-  shell, lid split, hinges/latches, corner guards, handle, and feet/wheels if
-  visible. Open totes/crates/baskets need thin walls, raised rim, visible
-  hollow interior, and side handles. Soft bags/backpacks need sagging rounded
-  fabric body, pocket/zipper panels, anchored straps, and seam/piping lines.
-- Handles and straps should overlap or penetrate their parent body slightly so
-  contact is visible. Do not turn open containers into capped solid blocks or
-  soft bags into rigid suitcases.
-
-Food and dish support guard:
-- Identify the edible object and visible support vessel separately. Build the
-  dominant food mass first, then plate, bowl, cup, glass, tray, or utensils
-  only when visible.
-- Preserve subtype cues before garnish: fruit peel/rind/cut face/segments/
-  seeds; pie or tart crust wall, fluted/lattice rim, filling, slice/cavity;
-  burger or sandwich bun halves plus distinct filling layers; bread dome,
-  split seam, crust color, and score/sesame marks.
-- Dish support is context, not the object. Keep food resting on or inside the
-  support with no floating gap, and avoid oversized vessels that swallow the
-  food silhouette.
-
-Architectural fixture and opening guard:
-- For doors, windows, arches, cabinets, fireplaces, glass booths, birdhouses,
-  mailboxes, sinks, faucets, and household fixtures, build the wall/frame/body
-  volume before front-face detail.
-- Openings need outer jambs, lintel/top arch or roof, threshold/base slab,
-  inner recess, hinge/handle side, and visible panes/doors/grilles when
-  present. Never use a single flat rectangle for an opening or fixture that
-  needs depth, mounting, basin, pipe, post, or box volume.
-
-Cinder Vector optimized family guards:
-- Before modeling, identify whether the object matches one of these families.
-  If so, lock the listed identity cues before color/material polish.
-- Seating: use connected plush upholstery pockets. Preserve cushion module
-  count, back/arm bolsters, piping, seams, tuft buttons, pillows, slats, and
-  legs/frame. Do not reduce sofas/chairs to slab backs, U-frames, or boxes.
-- Surface decoration: keep front-facing painted/printed/etched motifs
-  saturated and prompt-matched. Attach large readable motifs to the surface;
-  do not replace colored decoration with gray shadows, detached blobs, or
-  low-contrast marks.
-- Tools and blades: build one continuous skeleton first: shaft/blade to
-  handle, pivot or loop when present, readable tip/working end, and grouped
-  parallel count for darts, spikes, pens, or thin tools. Do not split handles
-  and blades into floating chunks or scatter clustered tools.
-- Instruments: anchor every playable detail to the visible resonator/body,
-  neck, tube, shell, bridge, or frame. Strings, frets, tines, holes, valves,
-  keys, rims, lugs, mouthpieces, and stands must be thick enough to read.
-- Toys/apparel routed prompts: model the visible object class, not a forced
-  robot. For clothing, preserve hollow neck/cuff/hem/waist/leg openings,
-  lapels, pockets, and sleeve/leg panel separation before smoothing cloth.
-- Plants, flowers, and produce: attach leaves, petals, blades, spines, fronds,
-  fruit cuts, rind, pit, grooves, segments, stems, and pot/soil to a visible
-  anchor. Do not scatter botanical parts as detached blobs.
-- Jewelry, gems, and ornaments: choose a solid carrier first, then contacted
-  hardware. Preserve front motif/rim/cap/bail/prongs/chain/clasp and readable
-  faceted or glass/metal zones before sparkle marks.
-- Vehicles: scaffold subtype minimums before trim. Bicycles need two large
-  high-contrast wheels, hubs, diamond/triangle frame, fork/head tube,
-  handlebar, saddle/seatpost, and crank/chain area. Cars need shell, cabin
-  glass, four wheels in wells, fascia, lights/intakes/grille, mirrors, and
-  paint/glass/tire separation. Boats need curved hull/gunwale/keel and visible
-  sails, oars, seats, rails, cabin, or interior when present. Dark/metallic
-  vehicles need explicit feature contrast, not one black/silver lump.
-- Vessels: classify cup/bowl/bottle/jar/vase/pitcher/teapot first. Preserve
-  transparent walls, fill color/height, foam/meniscus, rim thickness,
-  coaster/base, large front labels/florals/etching/facets/rim bands, and
-  contacted handles/spouts/lids/plungers before silhouette cleanup.
-- Architectural fixtures: preserve thick structural portals and open negative
-  space for arches/gates/shelters; closed box/body plus pitched roof for
-  birdhouses/mailboxes/doghouses; vanity/sink/counter/faucet/handle identity;
-  door seams, pulls, hinges, latches, thresholds, and frame reveals.
-- Architectural fixtures Stage 1 guard: when the prompt shows an arch,
-  portico, frame, transparent cage, door/window panel, mailbox body,
-  birdhouse, or household fixture mount, classify the subtype first and build
-  depth-bearing frame/body/opening geometry before decoration. Preserve
-  already-correct panels, knobs, flags, handles, and simple front silhouettes
-  while adding missing arches, columns, frames, basins, transparent panes, or
-  mounts. Do not flatten fixtures to front faces, and do not delete small
-  hardware while improving depth.
-- Bags and containers: preserve lid state, hollow interiors, raised lids,
-  hinge/latch/corner/feet/wheel hardware, side handles, and strap contact.
-  Soft bags, duffels, totes, and backpacks keep rounded fabric bodies, side
-  caps, zipper bands, pockets, seams, and anchored straps before hard-case
-  cleanup.
-- Food and dishes: lock the visible support dish scale/context before food
-  polish. Preserve plate/bowl/tray/shell/cup rims and depth, burger/sandwich
-  layer order, pie/tart crust/lattice/scallops, fruit cut faces/pits/seeds/
-  segments, garnish count, and utensil count/orientation.
-- Lighting: build the connected support skeleton before glow: base, stem/arm,
-  shade/head/bulb, socket, bracket, cord/chain, and contact points. Emissive
-  pieces cannot replace missing lamp structure.
-- Electronics/appliances: place the prompt-facing interface on the correct
-  face. Preserve casing depth plus screen/display, dials, buttons, lenses,
-  keys, handles, grilles, vents, clock ticks/hands, ports, and door seams as
-  large readable parts.
-- Tables, beds, and storage: preserve functional module count and support
-  logic before cleanup: tabletops/legs/braces, drawer/shelf/cubby counts,
-  bed frame/mattress/headboard/pillows/blankets, trunk latches/hinges/handles,
-  and visible open/closed compartments.
-
 Proportion tuning shortcut:
 - The fastest fix for a `wrong_proportion` issue is usually
   `mesh.scale.set(sx, sy, sz)` BEFORE adding to group, NOT rebuilding the
@@ -363,10 +231,27 @@ Proportion tuning shortcut:
     + "\n\n---\n\n"
     + THREEJS_OUTPUT_SPEC_REFERENCE
     + "\n\n---\n\n"
-    + FEW_SHOT_EXAMPLES
-    + "\n\n---\n\n"
     + THREEJS_PRIMITIVE_REFERENCE
 )
+
+
+CODER_USER_TEMPLATE_IMAGE_ONLY = """Reproduce the 3D object shown in the attached reference image
+as a Three.js module.
+
+There is no OSD — read the reference directly and decide on the object
+class, part hierarchy, counts, materials, and colors yourself. Apply the
+same conventions you would when an OSD is provided:
+
+- Name your top-level mesh / group consts after the parts you identify
+  (lowercase, underscores). The visual critic uses those names in later
+  repair rounds.
+- Pick PBR params from the material normalization quick-reference in your
+  system prompt — don't improvise metalness/roughness.
+- Call your `fitToUnitCube` helper with `0.95 / maxDim` so the object
+  fills ~95% of the frame.
+
+Return ONLY the JS module source.
+"""
 
 
 CODER_USER_TEMPLATE_OSD = """Object Structural Description (OSD):
@@ -389,8 +274,6 @@ Reminders before you write:
 - If this is a vehicle, use the vehicle modeling playbook: set shared
   dimensions first, keep front +Z / Y-up / width X, attach all major parts,
   and prioritize correct wheel/rotor/wing count and orientation before trim.
-- If the object matches a Cinder Vector optimized family, apply that family
-  guard from the system prompt before decorative cleanup.
 - Call your `fitToUnitCube` helper with `0.95 / maxDim` so the object
   fills ~95% of the frame (not lost in background).
 
@@ -398,7 +281,7 @@ Return ONLY the JS module source.
 """
 
 
-CODER_USER_TEMPLATE_FRESH = """Reference image is attached above. Decompose it into part meshes and generate the full JavaScript module now.
+CODER_USER_TEMPLATE_IMAGE_ONLY = """Reference image is attached above. Decompose it into part meshes and generate the full JavaScript module now.
 
 Reminders before you write:
 - Pick a clear part hierarchy from the image. Name each `const` after its
@@ -414,8 +297,6 @@ Reminders before you write:
 - If this is a vehicle, use the vehicle modeling playbook: set shared
   dimensions first, keep front +Z / Y-up / width X, attach all major parts,
   and prioritize correct wheel/rotor/wing count and orientation before trim.
-- If the reference matches a Cinder Vector optimized family, apply that family
-  guard from the system prompt before decorative cleanup.
 - Call your `fitToUnitCube` helper with `0.95 / maxDim` so the object
   fills ~95% of the frame (not lost in background).
 
@@ -661,3 +542,15 @@ Seating repair priority:
 - Return ONLY the full corrected JavaScript module source — no prose,
   no markdown fences.
 """
+
+ACCEPTED_STATIC_CODER_SYSTEM_APPEND = '### lighting\nLighting recipe:\n- Classify lighting subtype: table lamp, candelabra, candle/jar candle, light bar, glow tube/stick, lantern/dome, bulb fixture, or vehicle/toy light.\n- Build connected support structure before glow: base, stem/arm, shade/head, bulb/flame/wick, socket, bracket, cord/chain, jar/glass, and contact points.\n- Lamps need base, stem or arm, shade/bulb, shade rim/thickness, socket, and material separation. A glowing sphere alone is not a lamp.\n- Candles need wax body, wick, flame, melted top or jar/container when visible, and flame positioned at the wick. Candelabras need branched arms with candle cups and candles attached.\n- Light bars and glow sticks need casing/tube, end caps, emitting strip/core, mounts/clips, and transparent or emissive material contrast.\n- Lanterns/domes need base, transparent dome or frame ribs, handle/cap, internal bulb/flame, and visible enclosure thickness.\n\n### tables-beds-storage\nTables, beds, and storage recipe:\n- Classify functional module: table/console/nightstand, bed/mattress/pet bed, chest/drawers, open tray/rack/organizer, ottoman/storage seat, shelf/cubby, or cabinet.\n- Tables need tabletop thickness, legs/posts, braces/apron, base contact, and any drawers/pulls or decorative columns. Long consoles need repeated supports and clear gaps.\n- Beds need frame, mattress, headboard/footboard, pillows, blanket/quilt, visible legs/base, and separation between soft and hard parts.\n- Drawers/storage need carcass/body, drawer fronts, pull handles, shelf/cubby divisions, open/closed state, hinges/latches, and feet/base.\n- Open racks/trays/organizers need raised rim, internal divisions, rails, handles, visible hollow interior, and bottom thickness. Do not cap them as solid slabs.\n- Tufted mattresses/cushions need seam grid, buttons/depressions, piping, and soft rounded edges; not a plain rectangular block.\n\n### long-handled-implements\nLong handled implements recipe:\n- Apply only to single long implements with one dominant axis: pen, stylus, spoon, spatula, screwdriver, knife, quill, wand, rod, or simple handled tool.\n- Build along the axis as separate grip/shaft, connector/collar, working end, tip/head, and optional cap/topper. Do not make one uniform cylinder unless the reference is truly a plain rod.\n- Long objects should fill the frame diagonally or horizontally, with the working end large enough to inspect. Normalize scale after construction.\n- Flat heads/blades/spatulas need shallow extrude/flattened boxes with bevels. Spoon bowls need concave oval bowl plus handle contact. Quills need central shaft plus ordered feather barbs.\n- Preserve material zones: wood/rubber grip, metal shaft/head, plastic cap, ink nib, or feather/barb material.\n\n### instrument-dials\nInstrument dials recipe:\n- Apply only to circular or face-based instruments: astrolabe, planisphere, gauge, compass, watch, clock movement, dial caliper face, or measuring disc.\n- Build the dial stack: circular face/disc, raised bezel/rim, center pivot, tick ring, hands/pointers/radial arms, cutout rings or spokes, and backing frame.\n- Hands and radial arms are structural. Use thin boxes/tubes on the face, centered on the pivot, with visible length and contrast. Do not replace them with color marks or omit them.\n- Tick marks should be repeated short strokes around the ring. Roman/numeric marks may be simplified but must be surface-bound and ordered.\n- Pocket watches and wristwatches need case, crown, lugs/chain/strap, glass, face, hands, ticks, and material separation. Scientific discs need nested rings and open cutouts if visible.\n\n### transparent-edge-readability\nTransparent vessels and domes recipe:\n- Apply only when the reference object is primarily clear glass, transparent plastic, a clear dome, bottle, cup, vase, jar, blender wall, or display cover.\n- Build the opaque or high-contrast anchors first: cap, base ring, foot, rim, neck band, handle, hinge, frame ribs, or bottom ring. Then add transparent wall surfaces around those anchors.\n- Transparent walls must still read in the gray render: add thin darker edge rings, vertical seam/facet ribs, rim torus, shoulder/neck outline, and base outline. Use physical wall thickness, not a single invisible surface.\n- Keep glass material translucent, but do not make the object vanish. Use slight blue/gray tint, moderate opacity/transmission contrast, and small bright highlights on edges/facets.\n- For cones, domes, bottles, and vases, silhouette edges and top/bottom rims are more important than perfectly clear material.\n'
+ACCEPTED_STATIC_CODER_IMAGE_ONLY_APPEND = '### lighting\nIf the reference is a lamp, candle, candelabra, light bar, glow tube, lantern, or illuminated fixture, apply the lighting skeleton recipe before emissive effects.\n\n### tables-beds-storage\nIf the reference is table, bed, mattress, drawer unit, storage chest, rack, organizer, tray, ottoman, or cubby furniture, apply the tables/beds/storage recipe before color.\n\n### long-handled-implements\nIf the reference is a simple long handled implement, apply this narrower recipe and avoid dial/instrument assumptions.\n\n### instrument-dials\nIf the reference is a dial, watch, gauge, compass, astrolabe, clock movement, or circular measuring instrument, apply this profile instead of generic thin-tool rules.\n\n### transparent-edge-readability\nIf the reference is a clear bottle, cup, jar, vase, display dome, blender wall, transparent cone, or glass container, apply the transparent-edge-readability recipe after choosing the object subtype and before decorative details.\n'
+ACCEPTED_STATIC_CODER_REPAIR_APPEND = '### lighting\nLighting repair priority:\n- Fix connected base/stem/arm/shade/socket/flame/wick/casing/dome, part contact, and enclosure thickness before glow color.\n- If emissive material replaces missing structure, add the physical support and keep glow as a contained part.\n\n### tables-beds-storage\nTables/beds/storage repair priority:\n- Fix module count, support logic, legs/posts/braces, mattress/pillow/blanket separation, drawer/cubby counts, open hollow state, pulls/hinges/latches, and soft seams before color.\n- If a storage object becomes a box, restore front panels, handles, compartments, and lid/opening state.\n\n### long-handled-implements\nLong handled implement repair priority:\n- Fix long-axis scale, grip/shaft/head separation, working-end shape, cap/tip/collar, and material zones before color.\n- If it is an instrument dial or repeated tines object, use the specialized profile instead.\n\n### instrument-dials\nInstrument dial repair priority:\n- Fix face/rim/pivot, radial arms/hands, tick ring, nested rings/cutouts, crown/lugs/strap/chain, and contrast before color.\n- If a previous candidate lost pointer arms or ticks, add them as surface-bound geometry on the dial face.\n\n### transparent-edge-readability\nTransparent object repair priority:\n- If clear glass/plastic is too faint, first strengthen rim, base, neck, edge rings, ribs/facets, handle/frame, and wall thickness before changing color.\n- Do not replace transparent structure with a barely visible shell; add physical outlines and anchor parts while preserving translucent material.\n'
+
+CODER_SYSTEM_PROMPT = CODER_SYSTEM_PROMPT + "\n\n" + ACCEPTED_STATIC_CODER_SYSTEM_APPEND
+CODER_USER_TEMPLATE_IMAGE_ONLY = CODER_USER_TEMPLATE_IMAGE_ONLY + "\n\n" + ACCEPTED_STATIC_CODER_IMAGE_ONLY_APPEND
+CODER_USER_TEMPLATE_CHECKER_REPAIR = CODER_USER_TEMPLATE_CHECKER_REPAIR + "\n\n" + ACCEPTED_STATIC_CODER_REPAIR_APPEND
+CODER_USER_TEMPLATE_CHECKER_REPAIR_IMAGE = CODER_USER_TEMPLATE_CHECKER_REPAIR_IMAGE + "\n\n" + ACCEPTED_STATIC_CODER_REPAIR_APPEND
+CODER_USER_TEMPLATE_CRITIC_REPAIR = CODER_USER_TEMPLATE_CRITIC_REPAIR + "\n\n" + ACCEPTED_STATIC_CODER_REPAIR_APPEND
+CODER_USER_TEMPLATE_CRITIC_REPAIR_IMAGE = CODER_USER_TEMPLATE_CRITIC_REPAIR_IMAGE + "\n\n" + ACCEPTED_STATIC_CODER_REPAIR_APPEND
+

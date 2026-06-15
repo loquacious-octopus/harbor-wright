@@ -6,11 +6,14 @@ import re
 import time
 from typing import Any
 
+from config.settings import ProviderRoutingConfig
 from logger_config import logger
+from modules.base_agent import BaseAgent
 from modules.critic.prompts import CRITIC_SYSTEM_PROMPT, CRITIC_USER_TEMPLATE
 from modules.critic.schema import CriticReport
 from utils.json_extract import extract_json_object
 from utils.retry import async_retry
+from config.settings import ActorConfig
 
 _ARTIFACT_INLINE_MAX_CHARS = 4000
 
@@ -51,11 +54,15 @@ def _summarize_artifact_context(artifact_context: dict) -> str:
     """Render artifact context JSON, truncated if too long."""
     if artifact_context.get("kind") == "coder_v1":
         js_code = artifact_context.get("js_code") or ""
-        compact = {
+        osd = artifact_context.get("osd")
+        compact: dict[str, Any] = {
             "kind": artifact_context.get("kind"),
-            "osd": artifact_context.get("osd"),
             "js_parts": _extract_js_part_names(js_code),
         }
+        if osd is not None:
+            compact["osd"] = osd
+        else:
+            compact["mode"] = "pure-image (no OSD)"
         full = json.dumps(compact, indent=2)
         return full[:_ARTIFACT_INLINE_MAX_CHARS]
 
@@ -68,7 +75,7 @@ def critic_report_schema_prompt() -> str:
     return CRITIC_SYSTEM_PROMPT
 
 
-class CriticAgent:
+class CriticAgent(BaseAgent):
     """Stateless visual critic agent. One call ↔ one CriticReport.
 
     Holds config (`client`, `model`, `max_tokens`, `seed`, `reasoning_effort`,
@@ -76,44 +83,18 @@ class CriticAgent:
     the same way it calls `planner.plan(...)` / `coder.code(...)`. No session
     state — each call is independent (Qwen-VL sees a cold context every time).
     """
-
     actor = "critic"
-
     def __init__(
         self,
+        client: AsyncOpenAI,
+        settings: ActorConfig,
         *,
-        client: Any,
-        model: str,
-        max_tokens: int = 4096,
-        temperature: float = 0.0,
-        top_p: float | None = None,
-        top_k: int | None = None,
-        min_p: float | None = None,
-        presence_penalty: float | None = None,
-        repetition_penalty: float | None = None,
-        seed: int | None = 42,
         max_retries: int = 2,
-        reasoning_effort: str | None = None,
-        ensemble_size: int = 1,
-        backend: str = "openrouter",
-        total_stages: int = 7,
     ) -> None:
-        self.client = client
-        self.model = model
-        self.max_tokens = max_tokens
-        self.temperature = temperature
-        self.top_p = top_p
-        self.top_k = top_k
-        self.min_p = min_p
-        self.presence_penalty = presence_penalty
-        self.repetition_penalty = repetition_penalty
-        self.seed = seed
+        super().__init__(client, settings)
         self.max_retries = max_retries
-        self.reasoning_effort = reasoning_effort
-        self.ensemble_size = ensemble_size
-        self.backend = backend
-        self.total_stages = total_stages
-        self.critic_stage = 5 if total_stages == 7 else 4
+        self.reasoning_effort = settings.reasoning_effort
+        self.ensemble_size = settings.ensemble_size
 
     async def critique(
         self,
@@ -144,8 +125,7 @@ class CriticAgent:
             reasoning_effort=self.reasoning_effort,
             ensemble_size=self.ensemble_size,
             backend=self.backend,
-            total_stages=self.total_stages,
-            critic_stage=self.critic_stage,
+            providers=self.providers,
         )
 
 
@@ -170,15 +150,13 @@ async def run_critic(
     reasoning_effort: str | None = None,
     ensemble_size: int = 1,
     backend: str = "openrouter",
-    total_stages: int = 7,
-    critic_stage: int = 5,
+    providers: ProviderRoutingConfig | None = None,
 ) -> CriticReport:
     """Run one Critic call. Returns a validated CriticReport."""
-    stage_prefix = f"[{critic_stage}/{total_stages} Critic]"
     logger.info(
-        f"{stage_prefix} Started Task {task_id} | Model: {model} | Image KB: {len(image_bytes) / 1024:.1f} | Render KB: {len(render_png) / 1024:.1f} | Artifact Context: {len(artifact_context)}"
+        f"[5/7 Critic] Started Task {task_id} | Model: {model} | Image KB: {len(image_bytes) / 1024:.1f} | Render KB: {len(render_png) / 1024:.1f} | Artifact Context: {len(artifact_context)}"
     )
-    
+
     image_b64 = base64.b64encode(image_bytes).decode()
     render_b64 = base64.b64encode(render_png).decode()
     artifact_json = _summarize_artifact_context(artifact_context)
@@ -188,47 +166,60 @@ async def run_critic(
             extra_body["chat_template_kwargs"] = {"enable_thinking": True}
         else:
             extra_body["reasoning"] = {"effort": reasoning_effort}
-    for key, value in (
+            
+    for _ek, _ev in (
         ("top_k", top_k),
         ("min_p", min_p),
         ("repetition_penalty", repetition_penalty),
     ):
-        if value is not None:
-            extra_body[key] = value
+        if _ev is not None:
+            extra_body[_ek] = _ev
+
+    call_kwargs: dict[str, Any] = {}
+    if top_p is not None:
+        call_kwargs["top_p"] = top_p
+    if presence_penalty is not None:
+        call_kwargs["presence_penalty"] = presence_penalty
+    if providers is not None and backend != "vllm":
+        extra_body["provider"] = providers.model_dump(exclude_none=True)
 
     async def _one_call(call_seed: int | None) -> CriticReport:
         async def _call(_attempt: int, _last_err: str | None) -> CriticReport:
             t0 = time.time()
-            kwargs: dict[str, Any] = {
-                "model": model,
-                "messages": [
+            response = await client.chat.completions.create(
+                model=model,
+                messages=[
                     {"role": "system", "content": CRITIC_SYSTEM_PROMPT},
                     {
                         "role": "user",
                         "content": [
+                            {"type": "text", "text": CRITIC_USER_TEMPLATE.format(scene_ir_json=artifact_json)},
                             {"type": "image_url", "image_url": {"url": f"data:{image_mime};base64,{image_b64}"}},
                             {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{render_b64}"}},
-                            {"type": "text", "text": CRITIC_USER_TEMPLATE.format(scene_ir_json=artifact_json)},
                         ],
                     },
                 ],
-                "temperature": temperature,
-                "seed": call_seed,
-                "max_tokens": max_tokens,
-                "response_format": {"type": "json_object"},
-                "extra_body": extra_body or None,
-            }
-            if top_p is not None:
-                kwargs["top_p"] = top_p
-            if presence_penalty is not None:
-                kwargs["presence_penalty"] = presence_penalty
-            response = await client.chat.completions.create(**kwargs)
+                temperature=temperature,
+                seed=call_seed,
+                max_tokens=max_tokens,
+                response_format={"type": "json_object"},
+                extra_body=extra_body or None,
+                **call_kwargs,
+            )
             if not response.choices or not response.choices[0].message.content:
                 raise ValueError("Critic returned empty response")
+            usage = getattr(response, "usage", None)
+            if usage is not None:
+                logger.debug(
+                    f"[TOKENS Actor: critic Task:{task_id}] | "
+                    f"Prompt: {usage.prompt_tokens} | Completion: {usage.completion_tokens} | "
+                    f"Total: {usage.total_tokens} | Finish Reason: {response.choices[0].finish_reason} | "
+                    f"Max Tokens Cap: {max_tokens}"
+                )
             raw = response.choices[0].message.content.strip()
             report = CriticReport.model_validate_json(extract_json_object(raw))
             logger.info(
-                f"{stage_prefix} Finished Task {task_id} | Elapsed: {time.time() - t0:.1f}s | Score: {report.overall_score:.2f} | Issues: {len(report.issues)} | Seed: {call_seed}"
+                f"[5/7 Critic] Finished Task {task_id} | Elapsed: {time.time() - t0:.1f}s | Score: {report.overall_score:.2f} | Issues: {len(report.issues)} | Seed: {call_seed}"
             )
             return report
 
@@ -258,6 +249,6 @@ async def run_critic(
         "matching_aspects": union_matching,
     })
     logger.info(
-        f"{stage_prefix} Finished Task {task_id} | Ensemble: {ensemble_size} | Scores: {[round(r.overall_score, 2) for r in reports]} | Mean: {mean_score:.2f} | Median: {median_report.overall_score:.2f} | Issues: {len(merged.issues)}"
+        f"[5/7 Critic] Finished Task {task_id} | Ensemble: {ensemble_size} | Scores: {[round(r.overall_score, 2) for r in reports]} | Mean: {mean_score:.2f} | Median: {median_report.overall_score:.2f} | Issues: {len(merged.issues)}"
     )
     return merged
